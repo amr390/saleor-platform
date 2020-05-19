@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pv-claim
+  labels:
+    app: db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_PASSWORD
+          value: saleor
+        - name: POSTGRES_USER
+          value: saleor
+        image: postgres:11.1-alpine
+        name: db
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+          - name: db-persistent-storage
+            mountPath: /var/lib/postgresql/data/
+      volumes:
+        - name: db-persistent-storage
+          persistentVolumeClaim:
+            claimName: db-pv-claim
+      restartPolicy: Always

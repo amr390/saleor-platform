@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: saleor-prod
+  name: celery-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: celery-worker
+  template:
+    metadata:
+      labels:
+        pod: celery-worker
+    spec:
+      containers:
+      #- name: celery-worker
+        #image: spoonsdevs/saleor:latest
+        #command: ['celery', '-A', 'saleor', 'worker', '-l', 'info']
+      - args:
+        - celery
+        - -A
+        - saleor
+        - worker
+        - --app=saleor.celeryconf:app
+        - --loglevel=info
+        env:
+        - name: CELERY_BROKER_URL
+          value: redis://redis:6379/1
+        - name: DATABASE_URL
+          value: postgres://saleor:saleor@db/saleor
+        - name: DEFAULT_FROM_EMAIL
+          value: noreply@example.com
+        - name: OPENEXCHANGERATES_API_KEY
+        - name: SECRET_KEY
+          value: changeme
+        - name: VATLAYER_ACCESS_KEY
+        image: amasr/saleor-platform_api:2.10
+        name: worker
+        resources: {}
+      restartPolicy: Always

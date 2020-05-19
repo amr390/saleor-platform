@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: saleor-prod
+  name: dashboard
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+          app: dashboard
+  template:
+    metadata:
+      labels:
+        app: dashboard
+    spec:
+      containers:
+      - env:
+        - name: API_URI
+          value: http://localhost:8000/graphql/
+        - name: API_MOUNT_URI
+          value: /dashboard/
+        - name: STATIC_URL
+          value: /dashboard/
+        image: amasr/saleor-platform_dashboard:2.10
+        name: dashboard
+        ports:
+        - containerPort: 9000
+        resources: {}
+      restartPolicy: Always

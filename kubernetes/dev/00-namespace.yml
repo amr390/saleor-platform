@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+    name: saleor-prod
+    labels: 
+        name: saleor-prod

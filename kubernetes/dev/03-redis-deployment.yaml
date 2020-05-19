@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    matchLabels: redis
+  namespace: saleor-prod
+  name: redis
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: saleor
+  template:
+    metadata:
+      labels:
+        app: saleor
+    spec:
+      containers:
+      - image: redis:5.0-alpine
+        name: redis
+        ports:
+        - containerPort: 6379
+      restartPolicy: Always

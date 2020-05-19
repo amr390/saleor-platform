@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    matchLabels: jaeger
+  namespace: saleor-prod
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - env:
+        - name: ALLOWED_HOSTS
+          value: '*'
+        - name: ALLOWED_CLIENT_HOSTS
+          value: '*'
+        - name: CELERY_BROKER_URL
+          value: redis://redis:6379/1
+        - name: DASHBOARD_URL
+          value: http://dashboard:9000/
+        - name: DATABASE_URL
+          value: postgres://saleor:saleor@db/saleor
+        - name: DEFAULT_FROM_EMAIL
+          value: noreply@example.com
+        - name: JAEGER_AGENT_HOST
+          value: jaeger
+        - name: OPENEXCHANGERATES_API_KEY
+        - name: SECRET_KEY
+          value: changeme
+        - name: STOREFRONT_URL
+          value: http://storefront:3000/
+        - name: VATLAYER_ACCESS_KEY
+        name: api
+        image: amasr/saleor-platform_api:2.10
+        ports:
+          - containerPort: 8000
+      restartPolicy: Always

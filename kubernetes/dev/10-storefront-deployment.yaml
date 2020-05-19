@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    matchLabels: storefront
+  name: storefront
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: saleor
+  template:
+    metadata:
+      labels:
+        app: saleor
+    spec:
+      containers:
+        - env:
+          - name: API_URL
+            value: http://api:8000/graphql/
+          image: amasr/saleor-platform_storefront:2.10
+          name: storefront
+          ports:
+          - containerPort: 3000
+      restartPolicy: Always
