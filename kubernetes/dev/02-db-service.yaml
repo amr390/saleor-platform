@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: saleor-prod
+  namespace: saleor-dev
   labels:
     app: db
   name: db

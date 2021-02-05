@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     matchLabels: redis
-  namespace: saleor-prod
+  namespace: saleor-dev
   name: redis
 spec:
   replicas: 1

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     matchLabels: jaeger
-  namespace: saleor-prod
+  namespace: saleor-dev
   name: jaeger
 spec:
   replicas: 1

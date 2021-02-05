@@ -8,16 +8,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: saleor
+      app: storefront
   template:
     metadata:
       labels:
-        app: saleor
+        app: storefront
     spec:
       containers:
         - env:
           - name: API_URL
-            value: http://api:8000/graphql/
+            value: http://localhost:8000/graphql/
           image: amasr/saleor-platform_storefront:2.10
           name: storefront
           ports:
